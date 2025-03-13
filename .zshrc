@@ -130,9 +130,9 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias zshcf="vim ~/.zshrc"
+alias zshcf="vim ~/dotfiles/.zshrc"
 alias vim="nvim"
 alias gc="git commit -m"
 alias gs="git status"
 alias python="python3"
-alias vimcf="vim ~/.config/nvim/init.lua"
+alias vimcf="vim ~/dotfiles/init.lua"

@@ -8,10 +8,16 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Indentation
-vim.opt.expandtab = true    -- Convert tabs to spaces
-vim.opt.shiftwidth = 2      -- Number of spaces for indentation
-vim.opt.tabstop = 2         -- Number of spaces per tab
-vim.opt.softtabstop = 2     -- Backspace deletes 2 spaces
+-- vim.opt.expandtab = true    -- Convert tabs to spaces
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "javascript", "typescript", "dart", "yaml", "json" }, -- Add your filetypes
+    callback = function()
+        vim.opt.shiftwidth = 2
+        vim.opt.tabstop = 2
+        vim.opt.softtabstop = 2
+    end,
+})
+
 
 -- Enable mouse support
 vim.opt.mouse = "a"
@@ -49,6 +55,7 @@ vim.keymap.set("n", "<leader>f", ":!dart format %<CR>", { noremap = true, silent
 vim.keymap.set("n", "<C-s>", "<Esc>:w<CR>", { noremap = true, silent = false })
 
 -- Auto-Completion: Keep all suggestions visible while navigating
+-- Not sure if this works
 vim.opt.completeopt = { "menu", "menuone", "noselect", "preview" }
 
 -- Install plugins
@@ -64,7 +71,14 @@ require("lazy").setup({
     "akinsho/flutter-tools.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "stevearc/dressing.nvim" } -- Required dependencies
   },
-  "nvim-telescope/telescope.nvim", -- Fuzzy finder (optional)
+  {
+    "nvim-telescope/telescope.nvim", -- Fuzzy finder (optional)
+    config = function()
+      require("telescope").setup({})
+      vim.keymap.set("n", "<C-p>", ":Telescope find_files<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>o", ":Telescope lsp_document_symbols<CR>", { noremap = true, silent = true })
+    end
+  },
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -81,15 +95,17 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("nvim-tree").setup({})
-      -- vim.api.nvim_set_keymap("n", "<C-n>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<C-n>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
       vim.keymap.set("n", "<leader>n", ":NvimTreeFindFile<CR>", { noremap = true, silent = true })
-      -- Open when Tree is closed, focus when it has been already opened.
-      vim.keymap.set("n", "<C-n>", function()
+      -- Tab to navigate between active file & tree focuses.
+      vim.keymap.set("n", "<Tab>", function()
         local api = require("nvim-tree.api")
-        if api.tree.is_visible() then
-          api.tree.focus()  -- Focus if already open
+        if vim.bo.filetype == "NvimTree" then
+          -- If focus is on nvim-tree, move to the right (file)
+          vim.cmd("wincmd l")
         else
-          api.tree.toggle()  -- Open if closed
+          -- If focus is on file, move to the left (tree)
+          api.tree.focus()
         end
       end, { noremap = true, silent = true })
 

@@ -45,8 +45,12 @@ vim.g.mapleader = " "
 -- vim.o.updatetime = 300
 -- vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
--- Enable diagnostic
+-- Neovim LSP Diagnostic
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { noremap = true, silent = true })
+vim.diagnostic.config({
+    virtual_text = false,  -- Disable inline error messages
+    underline = true,      -- Keep underlines for warnings/errors
+})
 
 -- Enable formatting from build-in Dart
 vim.keymap.set("n", "<leader>f", ":!dart format %<CR>", { noremap = true, silent = true })

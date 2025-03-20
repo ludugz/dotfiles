@@ -8,14 +8,14 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Indentation
--- vim.opt.expandtab = true    -- Convert tabs to spaces
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "javascript", "typescript", "dart", "yaml", "json" }, -- Add your filetypes
-    callback = function()
-        vim.opt.shiftwidth = 2
-        vim.opt.tabstop = 2
-        vim.opt.softtabstop = 2
-    end,
+  pattern = { "javascript", "typescript", "dart", "yaml", "json", "lua" }, -- Add your filetypes
+  callback = function()
+    vim.opt.expandtab = true    -- Convert tabs to spaces
+    vim.opt.shiftwidth = 2
+    vim.opt.tabstop = 2
+    vim.opt.softtabstop = 2
+  end,
 })
 
 
@@ -48,8 +48,8 @@ vim.g.mapleader = " "
 -- Neovim LSP Diagnostic
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { noremap = true, silent = true })
 vim.diagnostic.config({
-    virtual_text = false,  -- Disable inline error messages
-    underline = true,      -- Keep underlines for warnings/errors
+  virtual_text = false,  -- Disable inline error messages
+  underline = true,      -- Keep underlines for warnings/errors
 })
 
 -- Enable formatting from build-in Dart
@@ -64,6 +64,17 @@ vim.opt.completeopt = { "menu", "menuone", "noselect", "preview" }
 
 -- Install plugins
 require("lazy").setup({
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+  },
+  {
+    "smjonas/inc-rename.nvim",
+    config = function()
+      require("inc_rename").setup()
+      vim.keymap.set("n", "<leader>rn", ":IncRename ")
+    end,
+  },
   {
     "neovim/nvim-lspconfig",  -- LSP support
   },
@@ -125,6 +136,7 @@ require("lazy").setup({
   "hrsh7th/cmp-nvim-lsp", -- LSP completion source
   "L3MON4D3/LuaSnip", -- Snippet support
   "tpope/vim-surround", -- Vim Surround
+  "RRethy/vim-illuminate", -- Highlighting same occurrences
   {
     "windwp/nvim-autopairs", -- Nvim auto pairs
     config = function()
@@ -132,6 +144,10 @@ require("lazy").setup({
     end
   },
 })
+
+-- Nvim colorscheme
+vim.cmd.colorscheme("rose-pine-main")
+-- vim.cmd.colorscheme("catppuccin")
 
 -- Flutter tools setup
 require("flutter-tools").setup{}
@@ -201,9 +217,6 @@ require("catppuccin").setup({
     -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
   },
 })
-
--- setup must be called before loading
-vim.cmd.colorscheme "catppuccin"
 
 -- Configure Completion
 local cmp = require("cmp")

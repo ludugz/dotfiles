@@ -18,7 +18,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-
 -- Enable mouse support
 vim.opt.mouse = "a"
 

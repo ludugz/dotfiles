@@ -1,0 +1,45 @@
+{
+  // Stateless Widget
+  "StatelessWidget": {
+    "prefix": "stless",
+    "body": [
+      "class ${1:MyWidget} extends StatelessWidget {",
+      "  const ${1:MyWidget}({super.key});",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return ${0:Container()};",
+      "  }",
+      "}"
+    ],
+    "description": "Flutter StatelessWidget"
+  },
+
+  // Stateful Widget
+  "StatefulWidget": {
+    "prefix": "stful",
+    "body": [
+      "class ${1:MyWidget} extends StatefulWidget {",
+      "  const ${1:MyWidget}({super.key});",
+      "",
+      "  @override",
+      "  State<${1:MyWidget}> createState() => _${1:MyWidget}State();",
+      "}",
+      "",
+      "class _${1:MyWidget}State extends State<${1:MyWidget}> {",
+      "  @override",
+      "  Widget build(BuildContext context) {",
+      "    return ${0:Container()};",
+      "  }",
+      "}"
+    ],
+    "description": "Flutter StatefulWidget"
+  },
+
+  // Text Widget
+  "Text": {
+    "prefix": "text",
+    "body": ["Text('${1:Hello}', style: TextStyle(fontSize: ${2:16}))"],
+    "description": "Flutter Text widget"
+  }
+}
